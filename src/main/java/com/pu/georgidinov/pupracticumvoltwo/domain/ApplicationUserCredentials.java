@@ -23,7 +23,7 @@ public class ApplicationUserCredentials implements BaseEntity {
     private String password;
 
 
-    @OneToOne(mappedBy = "applicationUserCredentials", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "applicationUserCredentials", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private ApplicationUser applicationUser;
 
     @Enumerated(value = EnumType.STRING)

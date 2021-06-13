@@ -27,7 +27,7 @@ public class ApplicationUser implements BaseEntity {
     @JoinColumn(name = "application_user_credentials_id")
     private ApplicationUserCredentials applicationUserCredentials;
 
-    @OneToMany(mappedBy = "applicationUser")
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private Set<ShoppingList> shoppingLists = new HashSet<>();
 
     @Override

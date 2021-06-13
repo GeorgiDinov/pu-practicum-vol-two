@@ -27,7 +27,7 @@ public class ShoppingList implements BaseEntity, BaseNamedEntity {
     @JoinColumn(name = "application_user_id")
     private ApplicationUser applicationUser;
 
-    @OneToMany(mappedBy = "shoppingList")
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL)
     private Set<Item> items = new HashSet<>();
 
     @Override

@@ -1,5 +1,6 @@
 package com.pu.georgidinov.pupracticumvoltwo.api.v1.controlleradvise;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.pu.georgidinov.pupracticumvoltwo.exception.ResourceAlreadyExistsException;
 import com.pu.georgidinov.pupracticumvoltwo.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class ControllerExceptionHandler {
+
+    @ExceptionHandler(InvalidFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleItemInvalidFormatException(InvalidFormatException exception) {
+        return new ErrorMessage(logError(exception));
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleNumberFormatException(NumberFormatException exception) {
+        return new ErrorMessage(logError(exception));
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
