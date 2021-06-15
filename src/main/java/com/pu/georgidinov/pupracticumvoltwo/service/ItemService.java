@@ -47,6 +47,7 @@ public class ItemService {
                     foundItem.id(id)
                             .name(item.getName())
                             .quantity(item.getQuantity())
+                            .shoppingList(item.getShoppingList())
                             .unitOfMeasure(item.getUnitOfMeasure());
                     return this.itemRepository.save(foundItem);
                 }).orElseThrow(() -> new ResourceNotFoundException("Item with id = '" + id + "' NOT FOUND"));
@@ -54,7 +55,15 @@ public class ItemService {
 
     public void deleteItemById(Long id) {
         log.info("ItemService::deleteItemById, ID passed = {}", id);
+        if (!isItemWithIdExists(id)) {
+            throw new ResourceNotFoundException("Item with id = '" + id + "' NOT FOUND");
+        }
         this.itemRepository.deleteById(id);
+    }
+
+    //== private methods ==
+    private boolean isItemWithIdExists(Long id) {
+        return this.itemRepository.findById(id).isPresent();
     }
 
 }

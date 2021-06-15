@@ -1,6 +1,7 @@
 package com.pu.georgidinov.pupracticumvoltwo.api.v1.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,10 @@ import lombok.Setter;
 public class ItemDto {
 
     private Long id;
+    @JsonProperty("shopping_list_id")
+    private Long shoppingListId;
     private String name;
     private int quantity;
-    private String shoppingListName;
     private String units;
 
 
@@ -23,10 +25,10 @@ public class ItemDto {
     public String toString() {
         return "ItemDto{" +
                 "id=" + id +
+                ", shoppingListId=" + shoppingListId +
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +
-                ", shoppingListName='" + shoppingListName + '\'' +
-                ", uomDescription='" + units + '\'' +
+                ", units='" + units + '\'' +
                 '}';
     }
 
@@ -46,8 +48,8 @@ public class ItemDto {
         return this;
     }
 
-    public ItemDto shoppingListName(String shoppingListName) {
-        this.shoppingListName = shoppingListName;
+    public ItemDto shoppingListId(Long shoppingListId) {
+        this.shoppingListId = shoppingListId;
         return this;
     }
 

@@ -4,6 +4,7 @@ import com.pu.georgidinov.pupracticumvoltwo.api.v1.converter.ItemDtoToItemConver
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.converter.ItemToItemDtoConverter;
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ItemDto;
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ItemDtoList;
+import com.pu.georgidinov.pupracticumvoltwo.domain.Item;
 import com.pu.georgidinov.pupracticumvoltwo.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,31 @@ public class ItemController {
     public ItemDto findItemById(@PathVariable Long id) {
         log.info("ItemController::findAllItemsForShoppingList, ID passed = {}", id);
         return toItemDto.convert(this.itemService.findItemByItemId(id));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ItemDto saveItem(@RequestBody ItemDto itemDto) {
+        log.info("ItemController::saveItem, DTO passed = {}", itemDto);
+        Item item = this.toItem.convert(itemDto);
+        Item savedItem = this.itemService.saveItem(item);
+        return this.toItemDto.convert(savedItem);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemDto updateItem(@RequestBody ItemDto itemDto, @PathVariable Long id) {
+        log.info("ItemController::updateItem, ID passed = {}", id);
+        Item item = this.toItem.convert(itemDto);
+        Item updatedItem = this.itemService.updateItem(item, id);
+        return this.toItemDto.convert(updatedItem);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteItem(@PathVariable Long id) {
+        log.info("ItemController::deleteItem, ID passed = {}", id);
+        this.itemService.deleteItemById(id);
     }
 
 }
