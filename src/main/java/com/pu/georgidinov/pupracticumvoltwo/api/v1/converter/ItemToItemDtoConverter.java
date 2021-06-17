@@ -14,18 +14,9 @@ public class ItemToItemDtoConverter implements Converter<Item, ItemDto> {
     public ItemDto convert(Item item) {
         return new ItemDto()
                 .id(item.getId())
-                .shoppingListId(extractShoppingListId(item))
                 .name(item.getName())
                 .quantity(item.getQuantity())
                 .units(extractUomDescription(item));
-    }
-
-    private Long extractShoppingListId(Item item) {
-        Long id = null;
-        if (item.getShoppingList() != null) {
-            id = item.getShoppingList().getId();
-        }
-        return id;
     }
 
     private String extractUomDescription(Item item) {

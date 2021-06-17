@@ -39,6 +39,22 @@ public class Item implements BaseEntity, BaseNamedEntity {
         return this.name;
     }
 
+    public void assignToShoppingList(ShoppingList shoppingList) {
+        if (shoppingList != null) {
+            shoppingList.addItem(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", quantity=" + quantity +
+                ", units=" + unitOfMeasure.getDescription() +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

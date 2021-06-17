@@ -35,6 +35,12 @@ public class ApplicationUser implements BaseEntity {
         return this.id;
     }
 
+    public void addShoppingList(ShoppingList shoppingList) {
+        if (shoppingList != null) {
+            this.shoppingLists.add(shoppingList.applicationUser(this));
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -54,6 +54,14 @@ public class UnitOfMeasure implements BaseEntity, BaseNamedEntity {
         return 11 + id.hashCode() + description.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "UnitOfMeasure{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
     //== builder methods ==
     public UnitOfMeasure id(Long id) {
         this.id = id;

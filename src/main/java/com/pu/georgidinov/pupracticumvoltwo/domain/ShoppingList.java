@@ -40,6 +40,12 @@ public class ShoppingList implements BaseEntity, BaseNamedEntity {
         return this.title;
     }
 
+    public void addItem(Item item) {
+        if (item != null) {
+            this.items.add(item.shoppingList(this));
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -55,6 +61,14 @@ public class ShoppingList implements BaseEntity, BaseNamedEntity {
     @Override
     public int hashCode() {
         return 31 + id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingList{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
     }
 
     //== builder methods ==
