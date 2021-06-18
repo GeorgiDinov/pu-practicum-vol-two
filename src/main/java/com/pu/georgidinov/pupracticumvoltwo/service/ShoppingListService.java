@@ -25,6 +25,12 @@ public class ShoppingListService {
         return lists;
     }
 
+    public ShoppingList findShoppingListById(Long id) {
+        log.info("ShoppingListService::findShoppingListById, ID passed = {}", id);
+        return this.shoppingListRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping List with ID = '" + id + "' NOT FOUND"));
+    }
+
     public List<ShoppingList> findAllShoppingListsByUserId(Long id) {
         log.info("ShoppingListService::findAllShoppingListsByUserId, ID passed = {}", id);
         return new ArrayList<>(this.shoppingListRepository.findAllByApplicationUserId(id));

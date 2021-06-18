@@ -57,6 +57,35 @@ class ShoppingListServiceTest {
     }
 
     @Test
+    void findShoppingListByIdOk() {
+        //given
+        Long id = 1L;
+        when(this.shoppingListRepository.findById(anyLong())).thenReturn(Optional.of(new ShoppingList().id(id)));
+        //when
+        ShoppingList savedList = this.shoppingListService.findShoppingListById(id);
+        //then
+        assertNotNull(savedList);
+        assertNotNull(savedList.getId());
+        assertEquals(id, savedList.getId());
+    }
+
+    @Test
+    void findShoppingListByIdNotFound() {
+        //given
+        long id = 1L;
+        String exceptionMessage = "Shopping List with ID = '" + id + "' NOT FOUND";
+        when(this.shoppingListRepository.findById(anyLong())).thenReturn(Optional.empty());
+        //when
+        Exception exception = assertThrows(ResourceNotFoundException.class,
+                () -> this.shoppingListService.findShoppingListById(id)
+        );
+        //then
+        assertNotNull(exception);
+        assertNotNull(exception.getMessage());
+        assertEquals(exceptionMessage, exception.getMessage());
+    }
+
+    @Test
     void findAllShoppingListsByUserIdOk() {
         //given
         Long id = 1L;

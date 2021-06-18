@@ -13,7 +13,7 @@ public class ShoppingListDto {
 
     private Long id;
     private String title;
-    private Long userId;
+    private String user;
     private ItemDtoList items;
 
     @Override
@@ -21,7 +21,7 @@ public class ShoppingListDto {
         return "ShoppingListDto{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", userId=" + userId +
+                ", user=" + user +
                 '}';
     }
 
@@ -36,8 +36,8 @@ public class ShoppingListDto {
         return this;
     }
 
-    public ShoppingListDto userId(Long userId) {
-        this.userId = userId;
+    public ShoppingListDto user(String user) {
+        this.user = user;
         return this;
     }
 

@@ -6,6 +6,10 @@ import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ItemDto;
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ItemDtoList;
 import com.pu.georgidinov.pupracticumvoltwo.domain.Item;
 import com.pu.georgidinov.pupracticumvoltwo.service.ItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,6 +28,14 @@ public class ItemController {
     private final ItemToItemDtoConverter toItemDto;
     private final ItemDtoToItemConverter toItem;
 
+
+    @Operation(summary = "This Operation Retrieves All Items Stored In DB")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Retrieves All Items From DB",
+                            content = {@Content(mediaType = "application/json")})
+            })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ItemDtoList findAllItems() {
@@ -32,6 +44,13 @@ public class ItemController {
         return new ItemDtoList(itemDtos);
     }
 
+    @Operation(summary = "This Operation Retrieves All Items For A Particular Shopping List Stored In DB")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Retrieves All Items For A Particular Shopping List From DB",
+                            content = {@Content(mediaType = "application/json")})
+            })
     @GetMapping("/inlist/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ItemDtoList findAllItemsForShoppingList(@PathVariable Long id) {
@@ -40,6 +59,16 @@ public class ItemController {
         return new ItemDtoList(itemDtos);
     }
 
+    @Operation(summary = "This Operation Retrieves Single Item Stored In DB By The Item ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Retrieves Single Item By It's ID From DB",
+                            content = {@Content(mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "404",
+                            description = "Returns Error Message If Item Not Found In DB",
+                            content = {@Content(mediaType = "application/json")})
+            })
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ItemDto findItemById(@PathVariable Long id) {
@@ -47,6 +76,13 @@ public class ItemController {
         return toItemDto.convert(this.itemService.findItemByItemId(id));
     }
 
+    @Operation(summary = "This Operation Creates Single Item And Stores It In The DB")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201",
+                            description = "Creates Single Item And Store It In The DB",
+                            content = {@Content(mediaType = "application/json")})
+            })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto saveItem(@RequestBody ItemDto itemDto) {
@@ -56,6 +92,16 @@ public class ItemController {
         return this.toItemDto.convert(savedItem);
     }
 
+    @Operation(summary = "This Operation Updates Single Item And Stores It In The DB")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Updates Single Item And Store It In The DB",
+                            content = {@Content(mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "404",
+                            description = "Returns Error Message If Item Not Found In DB",
+                            content = {@Content(mediaType = "application/json")})
+            })
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ItemDto updateItem(@RequestBody ItemDto itemDto, @PathVariable Long id) {
@@ -65,6 +111,16 @@ public class ItemController {
         return this.toItemDto.convert(updatedItem);
     }
 
+    @Operation(summary = "This Operation Deletes Single Item From DB")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Deletes Single Item From DB",
+                            content = {@Content(mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "404",
+                            description = "Returns Error Message If Item Not Found In DB",
+                            content = {@Content(mediaType = "application/json")})
+            })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteItem(@PathVariable Long id) {

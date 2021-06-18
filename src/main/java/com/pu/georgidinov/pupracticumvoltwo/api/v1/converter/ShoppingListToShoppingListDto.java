@@ -24,16 +24,16 @@ public class ShoppingListToShoppingListDto implements Converter<ShoppingList, Sh
         return new ShoppingListDto()
                 .id(shoppingList.getId())
                 .title(shoppingList.getTitle())
-                .userId(this.extractUserId(shoppingList))
+                .user(this.extractUser(shoppingList))
                 .items(this.extractItems(shoppingList));
     }
 
-    private Long extractUserId(ShoppingList shoppingList) {
-        Long userId = null;
+    private String extractUser(ShoppingList shoppingList) {
+        String user = "";
         if (shoppingList != null && shoppingList.getApplicationUser() != null) {
-            userId = shoppingList.getApplicationUser().getId();
+            user = shoppingList.getApplicationUser().getApplicationUserCredentials().getEmail();
         }
-        return userId;
+        return user;
     }
 
     private ItemDtoList extractItems(ShoppingList shoppingList) {

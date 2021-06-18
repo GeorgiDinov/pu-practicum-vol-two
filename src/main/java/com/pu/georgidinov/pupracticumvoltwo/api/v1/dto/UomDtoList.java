@@ -11,6 +11,9 @@ public class UomDtoList {
     @JsonProperty("units")
     private List<UomDto> uomDtoList = new ArrayList<>();
 
+    public UomDtoList() {
+    }
+
     public UomDtoList(List<UomDto> uomDtoList) {
         this.setUomDtoList(uomDtoList);
     }

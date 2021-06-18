@@ -11,6 +11,9 @@ public class ItemDtoList {
     @JsonProperty("items")
     private List<ItemDto> itemDtos = new ArrayList<>();
 
+    public ItemDtoList() {
+    }
+
     public ItemDtoList(List<ItemDto> itemDtos) {
         this.setItemDtos(itemDtos);
     }

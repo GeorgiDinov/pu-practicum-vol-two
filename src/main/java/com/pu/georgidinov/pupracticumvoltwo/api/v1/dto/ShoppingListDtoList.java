@@ -10,6 +10,9 @@ public class ShoppingListDtoList {
     @JsonProperty("shopping_lists")
     private List<ShoppingListDto> shoppingLists = new ArrayList<>();
 
+    public ShoppingListDtoList() {
+    }
+
     public ShoppingListDtoList(List<ShoppingListDto> shoppingLists) {
         this.setShoppingLists(shoppingLists);
     }
