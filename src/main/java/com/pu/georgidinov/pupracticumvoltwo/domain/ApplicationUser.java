@@ -27,6 +27,7 @@ public class ApplicationUser implements BaseEntity {
     @JoinColumn(name = "application_user_credentials_id")
     private ApplicationUserCredentials applicationUserCredentials;
 
+
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private Set<ShoppingList> shoppingLists = new HashSet<>();
 
@@ -39,6 +40,15 @@ public class ApplicationUser implements BaseEntity {
         if (shoppingList != null) {
             this.shoppingLists.add(shoppingList.applicationUser(this));
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ApplicationUser{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 
     @Override
@@ -75,7 +85,10 @@ public class ApplicationUser implements BaseEntity {
     }
 
     public ApplicationUser credentials(ApplicationUserCredentials credentials) {
-        this.applicationUserCredentials = credentials;
+        if (credentials != null) {
+            this.applicationUserCredentials = credentials;
+            credentials.applicationUser(this);
+        }
         return this;
     }
 

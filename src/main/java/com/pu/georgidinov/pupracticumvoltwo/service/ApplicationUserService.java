@@ -1,6 +1,7 @@
 package com.pu.georgidinov.pupracticumvoltwo.service;
 
 import com.pu.georgidinov.pupracticumvoltwo.domain.ApplicationUser;
+import com.pu.georgidinov.pupracticumvoltwo.domain.ShoppingList;
 import com.pu.georgidinov.pupracticumvoltwo.exception.ResourceNotFoundException;
 import com.pu.georgidinov.pupracticumvoltwo.repository.ApplicationUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,18 @@ public class ApplicationUserService {
     }
 
     public ApplicationUser saveApplicationUser(ApplicationUser user) {
-        log.info("ApplicationUserService::findApplicationUserById, User passed = {}", user);
+        log.info("ApplicationUserService::saveApplicationUser");
         return this.applicationUserRepository.save(user);
+    }
+
+    public ApplicationUser addShoppingList(ShoppingList shoppingList, Long id) {
+        log.info("ApplicationUserService::addShoppingList, Shopping List passed = {}, ID passed = {}", shoppingList, id);
+        return this.applicationUserRepository.findById(id)
+                .map(user -> {
+                    user.addShoppingList(shoppingList);
+                    return this.applicationUserRepository.save(user);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("User with ID = '" + id + "' NOT FOUND"));
     }
 
     public void deleteApplicationUserById(Long id) {

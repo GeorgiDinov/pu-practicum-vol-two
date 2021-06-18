@@ -1,7 +1,11 @@
 package com.pu.georgidinov.pupracticumvoltwo.bootstrap;
 
+import com.pu.georgidinov.pupracticumvoltwo.domain.ApplicationUser;
+import com.pu.georgidinov.pupracticumvoltwo.domain.ApplicationUserCredentials;
 import com.pu.georgidinov.pupracticumvoltwo.domain.UnitOfMeasure;
+import com.pu.georgidinov.pupracticumvoltwo.repository.ApplicationUserRepository;
 import com.pu.georgidinov.pupracticumvoltwo.repository.UnitOfMeasureRepository;
+import com.pu.georgidinov.pupracticumvoltwo.security.role.ApplicationUserRole;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,10 +21,13 @@ import org.springframework.stereotype.Component;
 public class DataLoader implements CommandLineRunner {
 
     private final UnitOfMeasureRepository unitOfMeasureRepository;
+    private final ApplicationUserRepository applicationUserRepository;
+    //private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
         this.loadUnitsOfMeasure();
+        this.createAdmin();
     }
 
 
@@ -33,6 +40,16 @@ public class DataLoader implements CommandLineRunner {
             log.info("Saving unit of measure = '{}'", savedUom);
         }
         log.info("Loaded {} units of measure", this.unitOfMeasureRepository.count());
+    }
+
+    private void createAdmin() {
+        ApplicationUserCredentials credentials = new ApplicationUserCredentials();
+        credentials.email("admin@example.com").password("admin").userRole(ApplicationUserRole.ADMIN);
+
+        ApplicationUser admin = new ApplicationUser();
+        admin.firstName("Admin_First_Name").lastName("Admin_Last_Name").credentials(credentials);
+        this.applicationUserRepository.save(admin);
+        log.info("Created Mock Administrator");
     }
 
 }
