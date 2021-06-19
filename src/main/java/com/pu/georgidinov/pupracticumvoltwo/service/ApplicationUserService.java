@@ -4,6 +4,7 @@ import com.pu.georgidinov.pupracticumvoltwo.domain.ApplicationUser;
 import com.pu.georgidinov.pupracticumvoltwo.domain.ShoppingList;
 import com.pu.georgidinov.pupracticumvoltwo.exception.ResourceNotFoundException;
 import com.pu.georgidinov.pupracticumvoltwo.repository.ApplicationUserRepository;
+import com.pu.georgidinov.pupracticumvoltwo.repository.ShoppingListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ApplicationUserService {
 
     private final ApplicationUserRepository applicationUserRepository;
+    private final ShoppingListRepository shoppingListRepository;
 
     public List<ApplicationUser> findAllApplicationUsers() {
         log.info("ApplicationUserService::findAllApplicationUsers");
@@ -40,7 +42,8 @@ public class ApplicationUserService {
         log.info("ApplicationUserService::addShoppingList, Shopping List passed = {}, ID passed = {}", shoppingList, id);
         return this.applicationUserRepository.findById(id)
                 .map(user -> {
-                    user.addShoppingList(shoppingList);
+                    ShoppingList savedList = this.shoppingListRepository.save(shoppingList);
+                    user.addShoppingList(savedList);
                     return this.applicationUserRepository.save(user);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID = '" + id + "' NOT FOUND"));

@@ -4,6 +4,7 @@ import com.pu.georgidinov.pupracticumvoltwo.domain.Item;
 import com.pu.georgidinov.pupracticumvoltwo.domain.ShoppingList;
 import com.pu.georgidinov.pupracticumvoltwo.domain.UnitOfMeasure;
 import com.pu.georgidinov.pupracticumvoltwo.exception.ResourceNotFoundException;
+import com.pu.georgidinov.pupracticumvoltwo.repository.ItemRepository;
 import com.pu.georgidinov.pupracticumvoltwo.repository.ShoppingListRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,8 @@ class ShoppingListServiceTest {
 
     @Mock
     private ShoppingListRepository shoppingListRepository;
+    @Mock
+    ItemRepository itemRepository;
     @InjectMocks
     private ShoppingListService shoppingListService;
 
@@ -168,6 +171,7 @@ class ShoppingListServiceTest {
         Item item = new Item().id(id).unitOfMeasure(new UnitOfMeasure());
         when(this.shoppingListRepository.findById(anyLong())).thenReturn(Optional.of(shoppingList));
         shoppingList.addItem(item);
+        when(this.itemRepository.save(any())).thenReturn(item);
         when(this.shoppingListRepository.save(any())).thenReturn(shoppingList);
         //when
         ShoppingList listWithNewItem = this.shoppingListService.addItemToShoppingList(item, id);

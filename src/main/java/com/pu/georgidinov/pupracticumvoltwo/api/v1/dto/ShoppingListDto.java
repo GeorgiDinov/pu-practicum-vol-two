@@ -1,9 +1,12 @@
 package com.pu.georgidinov.pupracticumvoltwo.api.v1.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,10 +14,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ShoppingListDto {
 
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("title")
     private String title;
+    @JsonProperty("user_email")
     private String user;
-    private ItemDtoList items;
+    @JsonProperty("items")
+    private List<ItemDto> items;
 
     @Override
     public String toString() {
@@ -41,7 +48,7 @@ public class ShoppingListDto {
         return this;
     }
 
-    public ShoppingListDto items(ItemDtoList items) {
+    public ShoppingListDto items(List<ItemDto> items) {
         this.items = items;
         return this;
     }

@@ -47,11 +47,12 @@ public class Item implements BaseEntity, BaseNamedEntity {
 
     @Override
     public String toString() {
+        String uom = unitOfMeasure != null ? unitOfMeasure.getDescription() : "";
         return "Item{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +
-                ", units=" + unitOfMeasure.getDescription() +
+                ", units=" + uom +
                 '}';
     }
 

@@ -1,7 +1,6 @@
 package com.pu.georgidinov.pupracticumvoltwo.api.v1.converter;
 
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ItemDto;
-import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ItemDtoList;
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ShoppingListDto;
 import com.pu.georgidinov.pupracticumvoltwo.domain.ShoppingList;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +35,11 @@ public class ShoppingListToShoppingListDto implements Converter<ShoppingList, Sh
         return user;
     }
 
-    private ItemDtoList extractItems(ShoppingList shoppingList) {
+    private List<ItemDto> extractItems(ShoppingList shoppingList) {
         List<ItemDto> dtos = new ArrayList<>();
         if (shoppingList != null && shoppingList.getItems() != null) {
             shoppingList.getItems().forEach(item -> dtos.add(toItemDto.convert(item)));
         }
-        return new ItemDtoList(dtos);
+        return dtos;
     }
 }

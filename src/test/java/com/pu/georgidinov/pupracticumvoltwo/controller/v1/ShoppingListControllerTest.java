@@ -5,7 +5,6 @@ import com.pu.georgidinov.pupracticumvoltwo.api.v1.converter.ItemDtoToItemConver
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.converter.ShoppingListDtoToShoppingList;
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.converter.ShoppingListToShoppingListDto;
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ItemDto;
-import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ItemDtoList;
 import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ShoppingListDto;
 import com.pu.georgidinov.pupracticumvoltwo.controller.AbstractRestControllerTest;
 import com.pu.georgidinov.pupracticumvoltwo.domain.ShoppingList;
@@ -75,7 +74,7 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
     void findShoppingListByIdOk() throws Exception {
         //given
         Long id = 1L;
-        ShoppingListDto dto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(new ItemDtoList());
+        ShoppingListDto dto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(new ArrayList<>());
         ShoppingList shoppingList = new ShoppingList();
         when(this.shoppingListService.findShoppingListById(anyLong())).thenReturn(shoppingList);
         when(this.toShoppingListDto.convert(any())).thenReturn(dto);
@@ -85,7 +84,7 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").exists())
-                .andExpect(jsonPath("$.user").exists())
+                .andExpect(jsonPath("$.user_email").exists())
                 .andExpect(jsonPath("$.items").exists());
     }
 
@@ -122,7 +121,7 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
     void saveShoppingList() throws Exception {
         //given
         Long id = 1L;
-        ShoppingListDto dto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(new ItemDtoList());
+        ShoppingListDto dto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(new ArrayList<>());
         ShoppingList shoppingList = new ShoppingList();
         when(this.toShoppingList.convert(any())).thenReturn(shoppingList);
         when(this.shoppingListService.saveShoppingList(any())).thenReturn(shoppingList);
@@ -135,7 +134,7 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").exists())
-                .andExpect(jsonPath("$.user").exists())
+                .andExpect(jsonPath("$.user_email").exists())
                 .andExpect(jsonPath("$.items").exists());
     }
 
@@ -143,7 +142,7 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
     void updateShoppingList() throws Exception {
         //given
         Long id = 1L;
-        ShoppingListDto dto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(new ItemDtoList());
+        ShoppingListDto dto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(new ArrayList<>());
         ShoppingList shoppingList = new ShoppingList();
         when(this.toShoppingList.convert(any())).thenReturn(shoppingList);
         when(this.shoppingListService.updateShoppingList(any(), anyLong())).thenReturn(shoppingList);
@@ -156,7 +155,7 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").exists())
-                .andExpect(jsonPath("$.user").exists())
+                .andExpect(jsonPath("$.user_email").exists())
                 .andExpect(jsonPath("$.items").exists());
     }
 
@@ -165,7 +164,7 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
         //given
         Long id = 1L;
         String exceptionMessage = "Shopping List with ID = '" + id + "' NOT FOUND";
-        ShoppingListDto dto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(new ItemDtoList());
+        ShoppingListDto dto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(new ArrayList<>());
         when(this.toShoppingList.convert(any())).thenReturn(new ShoppingList());
         when(this.shoppingListService.updateShoppingList(any(), anyLong()))
                 .thenThrow(new ResourceNotFoundException(exceptionMessage));
@@ -186,8 +185,7 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
         ItemDto itemDto = new ItemDto().name("test_name").quantity(5).units("meter");
         List<ItemDto> dtos = new ArrayList<>();
         dtos.add(itemDto);
-        ItemDtoList itemDtoList = new ItemDtoList(dtos);
-        ShoppingListDto shoppingListDto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(itemDtoList);
+        ShoppingListDto shoppingListDto = new ShoppingListDto().id(id).title("test_title").user("test_user@example.com").items(dtos);
         ShoppingList shoppingList = new ShoppingList();
         when(this.toShoppingList.convert(any())).thenReturn(shoppingList);
         when(this.shoppingListService.addItemToShoppingList(any(), anyLong())).thenReturn(shoppingList);
@@ -200,8 +198,9 @@ class ShoppingListControllerTest extends AbstractRestControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").exists())
-                .andExpect(jsonPath("$.user").exists())
-                .andExpect(jsonPath("$.items").exists());
+                .andExpect(jsonPath("$.user_email").exists())
+                .andExpect(jsonPath("$.items").exists())
+                .andExpect(jsonPath("$.items").isArray());
     }
 
     @Test

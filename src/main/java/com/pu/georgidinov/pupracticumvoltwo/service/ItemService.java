@@ -47,7 +47,6 @@ public class ItemService {
                     foundItem.id(id)
                             .name(item.getName())
                             .quantity(item.getQuantity())
-                            .shoppingList(item.getShoppingList())
                             .unitOfMeasure(item.getUnitOfMeasure());
                     return this.itemRepository.save(foundItem);
                 }).orElseThrow(() -> new ResourceNotFoundException("Item with id = '" + id + "' NOT FOUND"));

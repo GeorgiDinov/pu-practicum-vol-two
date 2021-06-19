@@ -3,6 +3,7 @@ package com.pu.georgidinov.pupracticumvoltwo.service;
 import com.pu.georgidinov.pupracticumvoltwo.domain.Item;
 import com.pu.georgidinov.pupracticumvoltwo.domain.ShoppingList;
 import com.pu.georgidinov.pupracticumvoltwo.exception.ResourceNotFoundException;
+import com.pu.georgidinov.pupracticumvoltwo.repository.ItemRepository;
 import com.pu.georgidinov.pupracticumvoltwo.repository.ShoppingListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ShoppingListService {
 
     private final ShoppingListRepository shoppingListRepository;
+    private final ItemRepository itemRepository;
 
     public List<ShoppingList> findAllShoppingLists() {
         log.info("ShoppingListService::findAllShoppingLists");
@@ -59,7 +61,8 @@ public class ShoppingListService {
         log.info("ShoppingListService::updateShoppingList, Item passed = {}, ID = {}", item, shoppingListId);
         return this.shoppingListRepository.findById(shoppingListId)
                 .map(list -> {
-                    list.addItem(item);
+                    Item savedItem = this.itemRepository.save(item);
+                    list.addItem(savedItem);
                     return this.shoppingListRepository.save(list);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Shopping List with ID = '" + shoppingListId + "' NOT FOUND"));

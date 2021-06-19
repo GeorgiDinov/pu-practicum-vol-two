@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,7 +20,8 @@ public class ApplicationUserDto {
     private String firstName;
     @JsonProperty("last_name")
     private String lastName;
-
+    @JsonProperty("shopping_lists")
+    private List<ShoppingListDto> shoppingLists;
 
     @Override
     public String toString() {
@@ -42,6 +45,11 @@ public class ApplicationUserDto {
 
     public ApplicationUserDto lastName(String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    public ApplicationUserDto shoppingLists(List<ShoppingListDto> shoppingLists) {
+        this.shoppingLists = shoppingLists;
         return this;
     }
 
