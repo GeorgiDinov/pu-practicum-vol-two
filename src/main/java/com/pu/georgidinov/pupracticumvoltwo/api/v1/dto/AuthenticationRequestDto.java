@@ -9,18 +9,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequestDto {
+public class AuthenticationRequestDto {
 
     private String email;
     private String password;
 
     //== builder methods ==
-    public LoginRequestDto email(String email) {
+    public AuthenticationRequestDto email(String email) {
         this.email = email;
         return this;
     }
 
-    public LoginRequestDto password(String password) {
+    public AuthenticationRequestDto password(String password) {
         this.password = password;
         return this;
     }

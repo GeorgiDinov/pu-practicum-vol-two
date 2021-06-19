@@ -13,9 +13,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -58,8 +60,10 @@ public class ApplicationUserController {
             })
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApplicationUserDto findUserById(@PathVariable Long id) {
-        log.info("ApplicationUserController::addShoppingList, ID passed = {}", id);
+        log.info("ApplicationUserController::findUserById, ID passed = {}", id);
         ApplicationUser user = this.applicationUserService.findApplicationUserById(id);
         return this.toApplicationUserDto.convert(user);
     }
@@ -76,6 +80,8 @@ public class ApplicationUserController {
             })
     @PostMapping("/addlist/{id}")
     @ResponseStatus(HttpStatus.CREATED)
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasAnyAuthority('shopping_list:read', 'shopping_list:write')")
     public ApplicationUserDto addShoppingList(@RequestBody ShoppingListDto dto, @PathVariable Long id) {
         log.info("ApplicationUserController::addShoppingList, DTO passed = {}, ID passed = {}", dto, id);
         ShoppingList shoppingList = this.toShoppingList.convert(dto);

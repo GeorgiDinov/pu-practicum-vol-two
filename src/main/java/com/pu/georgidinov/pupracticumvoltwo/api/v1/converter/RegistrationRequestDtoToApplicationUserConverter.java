@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -20,6 +21,7 @@ public class RegistrationRequestDtoToApplicationUserConverter implements Convert
 
 
     private final ApplicationUserCredentialsRepository credentialsRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Synchronized
     @Override
@@ -27,7 +29,7 @@ public class RegistrationRequestDtoToApplicationUserConverter implements Convert
         this.validateCredentials(dto);
 
         ApplicationUserCredentials credentials = new ApplicationUserCredentials();
-        credentials.email(dto.getEmail()).password(dto.getPassword()).userRole(ApplicationUserRole.USER);
+        credentials.email(dto.getEmail()).password(passwordEncoder.encode(dto.getPassword())).userRole(ApplicationUserRole.USER);
 
         ApplicationUser applicationUser = new ApplicationUser();
         applicationUser.firstName(dto.getFirstName()).lastName(dto.getLastName()).credentials(credentials);

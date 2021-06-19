@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -22,7 +23,7 @@ public class DataLoader implements CommandLineRunner {
 
     private final UnitOfMeasureRepository unitOfMeasureRepository;
     private final ApplicationUserRepository applicationUserRepository;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -44,7 +45,7 @@ public class DataLoader implements CommandLineRunner {
 
     private void createAdmin() {
         ApplicationUserCredentials credentials = new ApplicationUserCredentials();
-        credentials.email("admin@example.com").password("admin").userRole(ApplicationUserRole.ADMIN);
+        credentials.email("admin@example.com").password(passwordEncoder.encode("admin")).userRole(ApplicationUserRole.ADMIN);
 
         ApplicationUser admin = new ApplicationUser();
         admin.firstName("Admin_First_Name").lastName("Admin_Last_Name").credentials(credentials);
