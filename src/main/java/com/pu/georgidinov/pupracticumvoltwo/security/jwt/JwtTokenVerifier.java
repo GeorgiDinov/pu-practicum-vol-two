@@ -1,6 +1,7 @@
 package com.pu.georgidinov.pupracticumvoltwo.security.jwt;
 
 import com.google.common.base.Strings;
+import com.pu.georgidinov.pupracticumvoltwo.util.TokenBlackList;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -44,7 +45,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         log.info("Request token = {}", authorizationHeader);
 
         if (Strings.isNullOrEmpty(authorizationHeader) ||
-                !authorizationHeader.startsWith(jwtPropertyHolder.getTokenPrefix())) {
+                !authorizationHeader.startsWith(jwtPropertyHolder.getTokenPrefix()) || TokenBlackList.getInstance().containsToken(authorizationHeader)) {
             filterChain.doFilter(request, response);
             return;
         }

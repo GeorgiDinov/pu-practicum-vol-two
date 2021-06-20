@@ -9,6 +9,7 @@ import com.pu.georgidinov.pupracticumvoltwo.api.v1.dto.ShoppingListDto;
 import com.pu.georgidinov.pupracticumvoltwo.domain.ApplicationUser;
 import com.pu.georgidinov.pupracticumvoltwo.domain.ShoppingList;
 import com.pu.georgidinov.pupracticumvoltwo.service.ApplicationUserService;
+import com.pu.georgidinov.pupracticumvoltwo.util.TokenBlackList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,9 +17,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,6 +50,23 @@ public class ApplicationUserController {
         ApplicationUser user = this.toUser.convert(registrationRequestDto);
         ApplicationUser newUser = this.applicationUserService.saveApplicationUser(user);
         return this.toApplicationUserDto.convert(newUser);
+    }
+
+    @Operation(summary = "This Is Logout Operation Which Effectively Adds The User Token In Black List")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Puts User Token In Black List")
+            })
+    @GetMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    public void logout(HttpServletRequest request) {
+        log.info("ApplicationUserController::logout");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        log.info("Token Candidate For Black List = {}", token);
+        TokenBlackList.getInstance().addToken(token);
     }
 
     @Operation(summary = "This Operation Retrieves Single Application User Stored In DB By The User ID")
